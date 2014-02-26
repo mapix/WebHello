@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
 
+from webhello.static import Static
+
 from libs.template import serve_template
 from libs.router import Router
 
@@ -39,6 +41,7 @@ def application(environ, start_response):
 
 if __name__ == '__main__':
     from wsgiref.simple_server import make_server
+    application = Static(application, ('/static/', 'static'), {'/favicon.ico':'/static/favicon.ico'})
     httpd = make_server('', 8000, application)
     print "Serving on port 8000..."
     httpd.serve_forever()
