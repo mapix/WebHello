@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
+from mimetypes import guess_type
 
 __all__ = ["Static"]
 
@@ -27,21 +28,11 @@ class Static(object):
                                    environ.get('PATH_INFO')[len(self.url_prefix):])
         output = "404 Not Found"
         try:
-            if static_info.endswith(".jpg"):
-                content_type = 'image/jpg'
-            elif static_info.endswith(".gif"):
-                content_type = 'image/gif'
-            elif static_info.endswith(".ico"):
-                content_type = 'image/x-icon'
-            elif static_info.endswith(".js"):
-                content_type = 'application/javascript'
-            elif static_info.endswith(".css"):
-                content_type = 'text/css'
-            print static_info, content_type
-            if content_type:
+            mime_type = guess_type(static_info)
+            if mime_type:
                 with open(static_info) as f:
                     output = f.read()
-                    status = "200 OK"
+                    status, content_type = "200 OK", mime_type[0]
         except IOError:
             pass
         response_headers = [('Content-Type', content_type or "text/html"),
