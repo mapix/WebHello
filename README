@@ -1,8 +1,10 @@
-* Router[quixote, tornado]
-* Template
-* WebOb
-* Cache
-* Static
-* Storage
-* MiddleWare
-* WSGI
+* Router     60%
+* Request    60%
+* Response   40%
+* Cache      50%
+* Session    0%
+* Template   10%
+* Static     60%
+* Exception  40%
+* Storage    0%
+* Debug      0%

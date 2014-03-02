@@ -1,8 +1,13 @@
 # -*- coding:utf-8 -*-
 
+import os
+import sys
 
-from webhello.static import Static
-from webhello.router import Router
+from config import WEB_HELLO_BASE
+sys.path.insert(0, WEB_HELLO_BASE)
+
+from WebHello.static import Static
+from WebHello.router import Router
 
 from url import urls
 
