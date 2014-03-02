@@ -3,6 +3,10 @@
 import re
 import sys
 
+from .request import Request
+from .response import Response
+from .exception import HTTPException, HTTPNotFound
+
 __all__ = ["Router"]
 
 VAR_REGEX = re.compile(r'''
@@ -23,22 +27,28 @@ class Router(object):
     def add_route(self, template, controller):
         if isinstance(controller, basestring):
             controller = _load_controller(controller)
-        self.routes.append((re.compile(_template_to_regex(template)), controller))
+        self.routes.append((re.compile(_template_to_regex(template)),
+                            controller))
 
     def __call__(self, environ, start_response):
-        path_info = environ.get('PATH_INFO')
-        for regex, controller in self.routes:
-            print path_info, regex.pattern, regex.match(path_info)
-            match = regex.match(path_info)
-            if match:
-                urlvars = match.groupdict()
-                output = controller(None, **urlvars)
-                status = "200 OK"
-                response_headers = [('Content-Type', 'text/html'),
-                                    ('Content-Length', str(len(output)))]
-                start_response(status, response_headers)
-                return [output]
-        raise Exception('404')
+        request = Request(environ)
+        response = self.try_publish(request)
+        return response(environ, start_response)
+
+    def try_publish(self, request):
+        path_info = request.get_path_info()
+        try:
+            for regex, controller in self.routes:
+                match = regex.match(path_info)
+                if match:
+                    urlvars = match.groupdict()
+                    return Response(controller(request, **urlvars), request=request)
+            raise HTTPNotFound("request %r not found" % path_info)
+        except HTTPException as http_error:
+            http_error.request = request
+            return http_error
+        except:
+            raise
 
 
 def _template_to_regex(template):
