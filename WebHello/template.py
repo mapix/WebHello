@@ -6,33 +6,19 @@ from os.path import join
 __all__ = ["Template"]
 
 RENDER_BLOCK_RE = re.compile()
-EVA_BLOCK_RE = re.compile()
+EVA_CONTEXT_RE = re.compile()
+SIGNATURE_RE = re.compile()
 
+class EvaluationContext(object):
 
-class RenderBlock(object):
-
-    def __init__(self, name, signature, source, template):
-        self.name = name
-        self.signature = signature
-        self.source = source
+    def __init__(self, template, source, namespace):
         self.template = template
+        self.source = source
+        self.namespace = namespace
 
-    @classmethod
-    def make_block(cls, name, raw_source, template):
-        signature, source = cls.parse_raw_source(raw_source)
-        return cls(name, signature, source, tempate)
-
-    @classmethod
-    def parse_raw_source(cls, raw_source):
-        pass
-
-    def make_context(self, **kwargs):
-        return kwargs
-
-    def render(self, **kwargs):
-        container = self.make_context(**kwargs)
+    def render(self):
         output, last_pos = "", 0
-        for match in EVA_BLOCK_RE.finditer(self.source):
+        for match in EVA_CONTEXT_RE.finditer(self.source):
             output += content[last_pos:match.start()])
             statement = match.group('statement').strip()
             if statement.beginswith('#'):
@@ -45,29 +31,51 @@ class RenderBlock(object):
         return output + self.source[last_pos:]
 
 
-class Template(RenderBlock):
+class RenderBlock(object):
 
-    def __init__(self, name, signature, source):
-        super(Template, self).__init__(name, signature, source, self)
-        self.blocks = {}
-        self.parse_sub_blocks()
+    def __init__(self, template, raw_source):
+        self.template = template
+        self.raw_source = raw_source
+        self.parse_raw_source()
 
-    @classmethod
-    def parse_template(cls, filename):
-        with open(filename) as source_file:
-            content = source_file.read()
-        raw_source, raw_blocks, last_pos = "", [], 0
+    def parse_raw_source(self):
+        name, signature = "", "" #TODO
+        self.name = name
+        self.signature = signature
+
+    def make_context(self, namespace):
+        #TODO filter with signature
+        return EvaluationContext(self.template, self.source, namespace)
+
+    def render(self, namespace):
+        context = self.make_context(self, namespace)
+        return context.render()
+
+
+class Template(object):
+
+    def __init__(self, filename, raw_source):
+        self.filename = filename
+        self.raw_source = raw_source
+        self.parse_raw_source()
+
+    def parse_raw_source(self):
+        raw_source, raw_blocks, last_pos = self.raw_source, [], 0
         for match in RENDER_BLOCK_RE.finditer(content):
             raw_source += content[last_pos:match.start()])
-            raw_blocks.append(match.group(0))
+            raw_blocks.append(RenderBlock(self, match.group(0)))
             last_pos = match.end()
         source += content[last_pos:]
-        signature, source = cls.parse_raw_source(raw_source)
-        template = cls(filename, signature, source)
-        template.blocks = {name: cls.make_block(name, raw_block, template)
-                           for name, raw_block in raw_blocks}
-        return template
+        SIGNATURE_RE.sub(source, '')
+        self.signature = signature
+        self.source = source
+        self.blocks = {block.name, block for block in blocks}
 
-    @classmethod
-    def parse_raw_source(cls, raw_source):
-        pass
+    def make_context(self, namespace):
+        #TODO filter with signature
+        context = EvaluationContext(self.template, self.source, namespace)
+        return namespace
+
+    def render(self, namespace):
+        context = self.make_context(self, namespace)
+        return context.render()
