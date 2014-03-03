@@ -1,0 +1,26 @@
+{^ base="xxxx.html" }
+
+{@ xxx=xxx, xxx=xxxx, xxxx=xxx @}
+# page signature
+
+{= title =}
+# value
+
+{% include "xxxx.html" "iii=xxx, xxx=iiii" %}
+# page include
+
+{$ body(xxx=xxx, xxx=xxx) $}
+# call block
+
+{% for user in users %}
+{% endfor %}
+
+{% block body(xxx, iii=xxxx) %}
+{% endblock %}
+
+{% if loop.index is divisibleby 3 %}
+
+{% elif xxxx %}
+{% endif %}
+
+{# comments #}
