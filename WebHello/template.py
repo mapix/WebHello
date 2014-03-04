@@ -12,7 +12,7 @@ EVA_CONTEXT_RE = re.compile(r'''
   (?P=mark)}
 |
   {%
-    \s*(?P<director>for)\s+(?P<director_info>.*?)\s*
+    \s*(?P<director>(for|if))\s+(?P<director_info>.*?)\s*
   %}
   (?P<director_body>.*?)
   {%
@@ -20,10 +20,26 @@ EVA_CONTEXT_RE = re.compile(r'''
   %}
 )
 ''', re.VERBOSE | re.DOTALL)
-FOR_EVA_RE = re.compile(r'''
+FOR_STATEMENT_RE = re.compile(r'''
 ^
   (?P<item>(?:\w+)(?:\s*,\s*\w+)?)\s*in\s*(?P<items>.*?)
 $
+''', re.VERBOSE | re.DOTALL)
+IF_STATEMENT_RE = re.compile(r'''
+^
+(?P<if_statement>.*?)
+(?P<elif_directors>
+  (?:{%\s*elif\s+(?:.*?)%}
+     (?:.*?)
+  )*
+)
+({%\s*(?P<else_director>else)\s*%}
+  (?P<else_statement>.*?)
+)?
+$
+''', re.VERBOSE | re.DOTALL)
+ELIF_STATEMENT_RE = re.compile(r'''
+{%\s*elif\s+(?P<elif_director>.*?)%}(?P<elif_statement>.*?)(?=(?:$|{%\s*elif))
 ''', re.VERBOSE | re.DOTALL)
 
 
@@ -53,16 +69,43 @@ class EvaluationContext(object):
                 director_info = match.group('director_info')
                 director_body = match.group('director_body')
                 if director == "for":
-                    _match = FOR_EVA_RE.match(director_info)
-                    _item = _match.group('item')
-                    items = eval(_match.group('items'), self.namespace)
-                    for item in items:
-                        self.namespace['__WEB_HELLO_FOR_EVA__'] = item
-                        exec "%s = __WEB_HELLO_FOR_EVA__" % _item in self.namespace
-                        del self.namespace['__WEB_HELLO_FOR_EVA__']
-                        output += EvaluationContext(self.template, director_body, self.namespace).render()
+                    output += self.statement_for(director_info, director_body)
+                elif director == "if":
+                    output += self.statement_if(director_info, director_body)
             last_pos = match.end()
         return output + self.source[last_pos:]
+
+    def statement_for(self, director_info, director_body):
+        output = ""
+        _match = FOR_STATEMENT_RE.match(director_info)
+        _item = _match.group('item')
+        items = eval(_match.group('items'), self.namespace)
+        for item in items:
+            self.namespace['__WEB_HELLO_FOR_EVA__'] = item
+            exec "%s = __WEB_HELLO_FOR_EVA__" % _item in self.namespace
+            del self.namespace['__WEB_HELLO_FOR_EVA__']
+            output += EvaluationContext(self.template, director_body, self.namespace).render()
+        return output
+
+    def statement_if(self, director_info, director_body):
+        output, solved = "", False
+        match = IF_STATEMENT_RE.match(director_body)
+        if_statement = match.group('if_statement')
+        else_director = match.group('else_director')
+        else_statement = match.group('else_statement')
+        elifs = ELIF_STATEMENT_RE.findall(match.group('elif_directors'))
+        if eval(director_info, self.namespace):
+            solved = True
+            output = EvaluationContext(self.template, if_statement, self.namespace).render()
+        else:
+            for director, statement in elifs:
+                if eval(director, self.namespace):
+                    solved = True
+                    output = EvaluationContext(self.template, statement, self.namespace).render()
+                    break
+        if not solved and else_director:
+            output = EvaluationContext(self.template, else_statement, self.namespace).render()
+        return output
 
 
 class RenderBlock(object):
