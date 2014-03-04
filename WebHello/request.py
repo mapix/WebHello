@@ -30,7 +30,7 @@ class Request(object):
         self.cookies = Cookie.SimpleCookie(self.environ["HTTP_COOKIE"])
 
     def get_cookie(self, name):
-        return self.cookies["session"].value
+        return self.cookies[name].value if name in self.cookies else None
 
     def get_var(self, name, default=None):
         values = self.params.get(name)
