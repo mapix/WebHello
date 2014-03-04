@@ -27,6 +27,15 @@ class EvaluationContext(object):
                 block = self.template.blocks[_match.group('block')]
                 _namespace = eval(statement, block.signature)
                 output += block.render(_namespace)
+            elif mark == "*":
+                statement = match.group('statement').strip()
+                match = INCLUDE_RE.match(statement)
+                template = self.template.lookup.search_template(match.group('template'))
+                _func = template.signature['_']
+                _namespace = {k: v for k, v in self.namespace.items()}
+                _namespace['_WEBHELLO_INCLUDE_'] = _func
+                _namespace = eval('_WEBHELLO_INCLUDE_%s' % match.group('signature'), _namespace)
+                output += template.render(_namespace)
             elif not mark:
                 director = match.group('director').strip()
                 director_info = match.group('director_info')
@@ -88,7 +97,8 @@ class RenderBlock(object):
 
 class Template(object):
 
-    def __init__(self, filename, raw_source):
+    def __init__(self, lookup, filename, raw_source):
+        self.lookup = lookup
         self.filename = filename
         self.raw_source = raw_source
         self.parse_raw_source()
@@ -103,6 +113,10 @@ class Template(object):
         source += self.raw_source[last_pos:]
         self.source = source
         self.blocks = {block.name: block for block in blocks}
+        match = TEMPLATE_SIGNATURE_RE.search(self.source)
+        raw_signature = match.group('signature') if match else ''
+        self.signature = {}
+        exec "def _(%s):return locals()" % raw_signature in self.signature
 
     def render(self, namespace):
         context = EvaluationContext(self, self.source, namespace)
@@ -115,18 +129,21 @@ class Lookup(object):
         self.template_base = template_base
         self.config = config
 
-    def serve_template(self, template_file, **kwargs):
+    def search_template(self, template_file):
         filename = join(self.template_base, template_file)
         with open(filename) as f:
             raw_source = f.read()
-        template = Template(filename, raw_source)
+        return Template(self, filename, raw_source)
+
+    def serve_template(self, template_file, **kwargs):
+        template = self.search_template(template_file)
         return template.render(kwargs)
 
     def serve_template_func(self, template_file, block, **kwargs):
         filename = join(self.template_base, template_file)
         with open(filename) as f:
             raw_source = f.read()
-        template = Template(filename, raw_source)
+        template = Template(self, filename, raw_source)
         block = template.blocks[block]
         return block.render(kwargs)
 
@@ -136,7 +153,7 @@ BLOCK_INVOKE_RE = re.compile(r'''
 ''', re.DOTALL | re.VERBOSE)
 EVA_CONTEXT_RE = re.compile(r'''
 (
-  {(?P<mark>[\^\$@=#])
+  {(?P<mark>[\*\^\$@=#])
     \s*(?P<statement>.*?)
   (?P=mark)}
 |
@@ -176,3 +193,10 @@ RENDER_BLOCK_RE = re.compile(r'''
 (?P<source>.*?)
 {%\s*endblock\s*%}
 ''', re.VERBOSE | re.DOTALL)
+
+INCLUDE_RE = re.compile(r'''
+^\s*include\s+"(?P<template>.*?)"\s*(?P<signature>\(.*?\))\s*$
+''', re.VERBOSE | re.DOTALL)
+
+TEMPLATE_SIGNATURE_RE = re.compile(r'''{@\s*(?P<signature>.*?)\s*@}
+                                   ''', re.VERBOSE | re.DOTALL)
