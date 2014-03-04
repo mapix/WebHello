@@ -4,6 +4,7 @@
 
 Yet-another micro web framework in Python.
 
+
 # Progress
 
 * Router     100%
@@ -16,3 +17,9 @@ Yet-another micro web framework in Python.
 * Exception  100%
 * Storage    0%
 * Debug      0%
+
+
+# License
+
+`Webhello` is copyright 2014 mapix and Contributors, and is made
+available under BSD-style license; see LICENSE for details.
