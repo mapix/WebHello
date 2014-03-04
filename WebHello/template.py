@@ -29,12 +29,12 @@ class EvaluationContext(object):
                 output += block.render(_namespace)
             elif mark == "*":
                 statement = match.group('statement').strip()
-                match = INCLUDE_RE.match(statement)
-                template = self.template.lookup.search_template(match.group('template'))
+                _match = INCLUDE_RE.match(statement)
+                template = self.template.lookup.search_template(_match.group('template'))
                 _func = template.signature['_']
                 _namespace = {k: v for k, v in self.namespace.items()}
                 _namespace['_WEBHELLO_INCLUDE_'] = _func
-                _namespace = eval('_WEBHELLO_INCLUDE_%s' % match.group('signature'), _namespace)
+                _namespace = eval('_WEBHELLO_INCLUDE_%s' % _match.group('signature'), _namespace)
                 output += template.render(_namespace)
             elif not mark:
                 director = match.group('director').strip()
