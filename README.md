@@ -7,10 +7,10 @@ Yet-another micro web framework in Python.
 # Progress
 
 * Router     100%
-* Request    80%
-* Response   80%
+* Request    100%
+* Response   100%
 * Cache      100%
-* Session    0%
+* Session    100%
 * Template   70%
 * Static     100%
 * Exception  100%
