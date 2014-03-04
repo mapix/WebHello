@@ -11,7 +11,7 @@ Yet-another micro web framework in Python.
 * Response   80%
 * Cache      100%
 * Session    0%
-* Template   40%
+* Template   70%
 * Static     100%
 * Exception  100%
 * Storage    0%
