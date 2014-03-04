@@ -13,6 +13,8 @@ You call me to {= action =} <br>
 </tr>
 {% endfor%}
 
+{$show_block('<this is q>', '<this is user>')$}
+
 {% if name == "mapix"%}
    hahah, i know mapix
 {% elif name == "qingchen" %}
@@ -21,3 +23,11 @@ You call me to {= action =} <br>
    hahah, i know nothing about you
 {%endif%}
 </table>
+
+{% block show_block(q, user="user")%}
+<p>==============
+<p>i am in block
+<P>q is {= q =}
+<p>user is {= user =}
+<p>==============
+{%endblock%}

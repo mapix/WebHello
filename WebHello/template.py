@@ -4,43 +4,6 @@ import re
 from os.path import join
 
 __all__ = ["Lookup", "Template"]
-BLOCK_INVOKE_RE = re.compile("xxx")
-EVA_CONTEXT_RE = re.compile(r'''
-(
-  {(?P<mark>[\^\$@=#])
-    \s*(?P<statement>.*?)
-  (?P=mark)}
-|
-  {%
-    \s*(?P<director>(for|if))\s+(?P<director_info>.*?)\s*
-  %}
-  (?P<director_body>.*?)
-  {%
-    \s*end(?P=director)\s*
-  %}
-)
-''', re.VERBOSE | re.DOTALL)
-FOR_STATEMENT_RE = re.compile(r'''
-^
-  (?P<item>(?:\w+)(?:\s*,\s*\w+)?)\s*in\s*(?P<items>.*?)
-$
-''', re.VERBOSE | re.DOTALL)
-IF_STATEMENT_RE = re.compile(r'''
-^
-(?P<if_statement>.*?)
-(?P<elif_directors>
-  (?:{%\s*elif\s+(?:.*?)%}
-     (?:.*?)
-  )*
-)
-({%\s*(?P<else_director>else)\s*%}
-  (?P<else_statement>.*?)
-)?
-$
-''', re.VERBOSE | re.DOTALL)
-ELIF_STATEMENT_RE = re.compile(r'''
-{%\s*elif\s+(?P<elif_director>.*?)%}(?P<elif_statement>.*?)(?=(?:$|{%\s*elif))
-''', re.VERBOSE | re.DOTALL)
 
 
 class EvaluationContext(object):
@@ -62,8 +25,8 @@ class EvaluationContext(object):
                 statement = match.group('statement').strip()
                 _match = BLOCK_INVOKE_RE.match(statement)
                 block = self.template.blocks[_match.group('block')]
-                _namespace = eval(statement, {k: v for k, v in block.signature.items()})
-                block.render(_namespace)
+                _namespace = eval(statement, block.signature)
+                output += block.render(_namespace)
             elif not mark:
                 director = match.group('director').strip()
                 director_info = match.group('director_info')
@@ -110,22 +73,16 @@ class EvaluationContext(object):
 
 class RenderBlock(object):
 
-    def __init__(self, template, raw_source):
+    def __init__(self, template, name, raw_signature, source):
         self.template = template
-        self.raw_source = raw_source
-        self.parse_raw_source()
-
-    def parse_raw_source(self):
-        self.name = ""
+        self.name = name
+        self.source = source
+        self.raw_signature = raw_signature
         self.signature = {}
         exec "def %s:return locals()" % self.raw_signature in self.signature
 
-    def make_context(self, namespace):
-        #TODO filter with signature
-        return EvaluationContext(self.template, self.source, namespace)
-
     def render(self, namespace):
-        context = self.make_context(self, namespace)
+        context = EvaluationContext(self.template, self.source, namespace)
         return context.render()
 
 
@@ -137,24 +94,18 @@ class Template(object):
         self.parse_raw_source()
 
     def parse_raw_source(self):
-        #raw_source, raw_blocks, last_pos = self.raw_source, [], 0
-        #for match in RENDER_BLOCK_RE.finditer(content):
-        #    raw_source += content[last_pos:match.start()])
-        #    raw_blocks.append(RenderBlock(self, match.group(0)))
-        #    last_pos = match.end()
-        #source += content[last_pos:]
-        #SIGNATURE_RE.sub(source, '')
-        # self.signature = signature
-        #self.source = source
-        #self.blocks = {block.name: block for block in blocks}
-        self.source = self.raw_source
-
-    def make_context(self, namespace):
-        #TODO filter with signature
-        return EvaluationContext(self, self.source, namespace)
+        source, blocks, last_pos = "", [], 0
+        for match in RENDER_BLOCK_RE.finditer(self.raw_source):
+            source += self.raw_source[last_pos:match.start()]
+            blocks.append(RenderBlock(self, match.group('name'),
+                    match.group('signature'), match.group('source')))
+            last_pos = match.end()
+        source += self.raw_source[last_pos:]
+        self.source = source
+        self.blocks = {block.name: block for block in blocks}
 
     def render(self, namespace):
-        context = self.make_context(namespace)
+        context = EvaluationContext(self, self.source, namespace)
         return context.render()
 
 
@@ -178,3 +129,50 @@ class Lookup(object):
         template = Template(filename, raw_source)
         block = template.blocks[block]
         return block.render(kwargs)
+
+BLOCK_INVOKE_RE = re.compile(r'''
+^\s*(?P<block>\w+)
+\(.*?\)\s*$
+''', re.DOTALL | re.VERBOSE)
+EVA_CONTEXT_RE = re.compile(r'''
+(
+  {(?P<mark>[\^\$@=#])
+    \s*(?P<statement>.*?)
+  (?P=mark)}
+|
+  {%
+    \s*(?P<director>(for|if))\s+(?P<director_info>.*?)\s*
+  %}
+  (?P<director_body>.*?)
+  {%
+    \s*end(?P=director)\s*
+  %}
+)
+''', re.VERBOSE | re.DOTALL)
+FOR_STATEMENT_RE = re.compile(r'''
+^
+  (?P<item>(?:\w+)(?:\s*,\s*\w+)?)\s*in\s*(?P<items>.*?)
+$
+''', re.VERBOSE | re.DOTALL)
+IF_STATEMENT_RE = re.compile(r'''
+^
+(?P<if_statement>.*?)
+(?P<elif_directors>
+  (?:{%\s*elif\s+(?:.*?)%}
+     (?:.*?)
+  )*
+)
+({%\s*(?P<else_director>else)\s*%}
+  (?P<else_statement>.*?)
+)?
+$
+''', re.VERBOSE | re.DOTALL)
+ELIF_STATEMENT_RE = re.compile(r'''
+{%\s*elif\s+(?P<elif_director>.*?)%}(?P<elif_statement>.*?)(?=(?:$|{%\s*elif))
+''', re.VERBOSE | re.DOTALL)
+
+RENDER_BLOCK_RE = re.compile(r'''
+{%\s*block\s+(?P<signature>(?P<name>\w+)\(.*?\))\s*%}
+(?P<source>.*?)
+{%\s*endblock\s*%}
+''', re.VERBOSE | re.DOTALL)
