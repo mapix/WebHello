@@ -6,13 +6,13 @@ Yet-another micro web framework in Python.
 
 # Progress
 
-* Router     60%
-* Request    60%
-* Response   40%
-* Cache      50%
+* Router     100%
+* Request    80%
+* Response   80%
+* Cache      100%
 * Session    0%
-* Template   10%
-* Static     60%
-* Exception  40%
+* Template   40%
+* Static     100%
+* Exception  100%
 * Storage    0%
 * Debug      0%
