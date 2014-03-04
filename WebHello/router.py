@@ -19,7 +19,8 @@ VAR_REGEX = re.compile(r'''
 
 class Router(object):
 
-    def __init__(self, routes=[]):
+    def __init__(self, routes=None):
+        routes = routes or []
         self.routes = []
         for template, controller in routes:
             self.add_route(template, controller)

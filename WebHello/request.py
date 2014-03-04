@@ -3,6 +3,7 @@
 
 import cgi
 import cgitb
+import Cookie
 from collections import defaultdict
 from tempfile import TemporaryFile
 cgitb.enable()
@@ -17,15 +18,19 @@ class Request(object):
         self.config = config
         self.files = {}
         self.params = defaultdict(list)
-        self._prepare_params()
+        self._prepare_request()
 
-    def _prepare_params(self):
+    def _prepare_request(self):
         fields = cgi.FieldStorage(fp=self.environ['wsgi.input'], environ=self.environ, keep_blank_values=1)
         for field in fields.list:
             if isinstance(field.file, file):
                 self.files[field.name] = (field.type, self._save_upload(field.file))
             else:
                 self.params[field.name].append(field.value)
+        self.cookies = Cookie.SimpleCookie(self.environ["HTTP_COOKIE"])
+
+    def get_cookie(self, name):
+        return self.cookies["session"].value
 
     def get_var(self, name, default=None):
         values = self.params.get(name)
