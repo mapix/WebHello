@@ -13,6 +13,7 @@ You call me to {= action =} <br>
 <table>
 {% for k, v in environ.items()%}
 <tr>
+    <td>{= loop.index =}</td>
     <td>{= k =}</td>
     <td>{= v =}</td>
 </tr>

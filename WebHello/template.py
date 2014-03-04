@@ -23,19 +23,10 @@ class EvaluationContext(object):
                 output += str(eval(statement, self.namespace))
             elif mark == "$":
                 statement = match.group('statement').strip()
-                _match = BLOCK_INVOKE_RE.match(statement)
-                block = self.template.blocks[_match.group('block')]
-                _namespace = eval(statement, block.signature)
-                output += block.render(_namespace)
+                output += self.statement_eval(statement)
             elif mark == "*":
                 statement = match.group('statement').strip()
-                _match = INCLUDE_RE.match(statement)
-                template = self.template.lookup.search_template(_match.group('template'))
-                _func = template.signature['_']
-                _namespace = {k: v for k, v in self.namespace.items()}
-                _namespace['_WEBHELLO_INCLUDE_'] = _func
-                _namespace = eval('_WEBHELLO_INCLUDE_%s' % _match.group('signature'), _namespace)
-                output += template.render(_namespace)
+                output += self.statement_include(statement)
             elif not mark:
                 director = match.group('director').strip()
                 director_info = match.group('director_info')
@@ -47,16 +38,35 @@ class EvaluationContext(object):
             last_pos = match.end()
         return output + self.source[last_pos:]
 
+    def statement_eval(self, statement):
+        _match = BLOCK_INVOKE_RE.match(statement)
+        block = self.template.blocks[_match.group('block')]
+        _namespace = eval(statement, block.signature)
+        return block.render(_namespace)
+
+    def statement_include(self, statement):
+        _match = INCLUDE_RE.match(statement)
+        template = self.template.lookup.search_template(_match.group('template'))
+        _func = template.signature['_']
+        _namespace = {k: v for k, v in self.namespace.items()}
+        _namespace['_WEBHELLO_INCLUDE_'] = _func
+        _namespace = eval('_WEBHELLO_INCLUDE_%s' % _match.group('signature'), _namespace)
+        return template.render(_namespace)
+
     def statement_for(self, director_info, director_body):
         output = ""
         _match = FOR_STATEMENT_RE.match(director_info)
         _item = _match.group('item')
         items = eval(_match.group('items'), self.namespace)
-        for item in items:
+        loop = Loop()
+        self.namespace['loop'] = loop
+        for i, item in enumerate(items):
+            loop.index = i
             self.namespace['__WEB_HELLO_FOR_EVA__'] = item
             exec "%s = __WEB_HELLO_FOR_EVA__" % _item in self.namespace
             del self.namespace['__WEB_HELLO_FOR_EVA__']
             output += EvaluationContext(self.template, director_body, self.namespace).render()
+        del self.namespace['loop']
         return output
 
     def statement_if(self, director_info, director_body):
@@ -200,3 +210,6 @@ INCLUDE_RE = re.compile(r'''
 
 TEMPLATE_SIGNATURE_RE = re.compile(r'''{@\s*(?P<signature>.*?)\s*@}
                                    ''', re.VERBOSE | re.DOTALL)
+
+class Loop(object):
+    pass
