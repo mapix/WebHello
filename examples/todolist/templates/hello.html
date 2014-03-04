@@ -1,5 +1,23 @@
-Welcome {name}
-You call me to {action} <br>
+Welcome {= name =}
+You call me to {= action =} <br>
+{# this is comments #}
 <a href="/test_post"> test post</a> <br>
 <a href="/hello/leehom/"> hello leehom</a> <br>
 <a href="/hello/leehom/?action=sleep"> leehom sleep</a>
+
+<table>
+{% for k, v in environ.items()%}
+<tr>
+    <td>{= k =}</td>
+    <td>{= v =}</td>
+</tr>
+{% endfor%}
+
+{% if name == "mapix"%}
+   hahah, i know mapix
+{% elif name == "qingchen" %}
+   hahah, i know qingchen
+{%else%}
+   hahah, i know nothing about you
+{%endif%}
+</table>

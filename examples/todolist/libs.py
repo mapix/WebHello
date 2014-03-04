@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from WebHello.template import Template
+from WebHello.template import Lookup
 
 from config import TEMPLATE_BASE
 
 
-template = Template(TEMPLATE_BASE)
-st = serve_template = template.serve_template
+lookup = Lookup(TEMPLATE_BASE)
+serve_template = lookup.serve_template
