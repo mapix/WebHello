@@ -51,7 +51,7 @@ class Request(object):
 
     def get_url(self):
         scheme = self.get_scheme()
-        return "%s://%s%s%s" % (scheme, self.environ['HTTP_HOST'], 
+        return "%s://%s%s?%s" % (scheme, self.environ['HTTP_HOST'], 
                 self.environ['PATH_INFO'], self.environ['QUERY_STRING'])
 
     def _save_upload(self, upload_file):
