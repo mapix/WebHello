@@ -2,9 +2,6 @@
 Router
 ======
 
-API Reference
-=============
-
 .. py:module:: WebHello.router
 
 .. py:class:: Router(routes=None)

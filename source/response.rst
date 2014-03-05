@@ -2,9 +2,6 @@
 Response
 ========
 
-API Reference
-=============
-
 .. py:module:: WebHello.response
 
 .. py:class:: Response(output='', request=None)

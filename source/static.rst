@@ -2,9 +2,6 @@
 Static
 ======
 
-API Reference
-=============
-
 .. py:module:: WebHello.static
 
 .. py:class:: Static(self, application, static_config, rewrite_rule=None)

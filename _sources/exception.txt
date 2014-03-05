@@ -2,9 +2,6 @@
 Exception
 =========
 
-API Reference
-=============
-
 .. py:module:: WebHello.exception
 
 

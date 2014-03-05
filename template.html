@@ -77,21 +77,11 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#license">License</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="router.html">Router</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="router.html#module-WebHello.router">API Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="request.html">Request</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="request.html#module-WebHello.request">API Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="response.html">Response</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="response.html#module-WebHello.response">API Reference</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="router.html">Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request</a></li>
+<li class="toctree-l1"><a class="reference internal" href="response.html">Response</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Template</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#supported-syntax">Supported syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-WebHello.template">API Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="static.html">Static</a></li>
@@ -130,67 +120,8 @@
 <hr/>
 
           
-  <div class="section" id="template">
-<h1>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="supported-syntax">
-<h2>Supported syntax<a class="headerlink" href="#supported-syntax" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">Evaluation Statement:</p>
-<div class="highlight-python"><pre>{= title =}
-{= len(users) + len(groups) =}</pre>
-</div>
-</li>
-<li><p class="first">Loop Statement:</p>
-<div class="highlight-python"><pre>{% for user in users %}
-  &lt;tr&gt;
-    &lt;td&gt;{= loop.index =}&lt;/td&gt;
-    &lt;td&gt;&lt;a href="{= user.url() =}"&gt;{= user.name =}&lt;/a&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-{% endfor %}</pre>
-</div>
-</li>
-<li><p class="first">IF Statement:</p>
-<div class="highlight-python"><pre>{% if user.is_admin() or user.is_manager() %}
-    Welcome {= user.name =}
-{% elif user.active() %}
-    Ha, ha. You are active.
-{% else %}
-  {% for food in foods %}
-     &lt;li&gt;{= loop.index =}. choice {= food =}
-  {% endfor %}
-{% endif %}</pre>
-</div>
-</li>
-<li><p class="first">Inlucde Statement:</p>
-<div class="highlight-python"><pre>{* include "widgets/nav.html" (group="this is group", action=action) *}</pre>
-</div>
-</li>
-<li><p class="first">Page Args:</p>
-<div class="highlight-python"><pre>{@ group, action, name="this is name" @}</pre>
-</div>
-</li>
-<li><p class="first">Block Definition:</p>
-<div class="highlight-python"><pre>{% block show_block(q, user="user") %}
-  &lt;p&gt;==============
-  &lt;p&gt;this is show_block in base.html
-  &lt;P&gt;q is {= q =}
-  &lt;p&gt;user is {= user =}
-  &lt;p&gt;==============
-{% endblock %}</pre>
-</div>
-</li>
-<li><p class="first">Block Invocation:</p>
-<div class="highlight-python"><pre>{$show_block('&lt;this is q&gt;', '&lt;this is user&gt;')$}</pre>
-</div>
-</li>
-<li><p class="first">Template Inherit:</p>
-<div class="highlight-python"><pre>{^ base="base.html" ^}</pre>
-</div>
-</li>
-</ul>
-</div>
-<div class="section" id="module-WebHello.template">
-<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-WebHello.template" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="module-WebHello.template">
+<span id="template"></span><h1>Template<a class="headerlink" href="#module-WebHello.template" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="WebHello.template.Lookup">
 <em class="property">class </em><tt class="descclassname">WebHello.template.</tt><tt class="descname">Lookup</tt><big>(</big><em>template_base</em>, <em>**config</em><big>)</big><a class="headerlink" href="#WebHello.template.Lookup" title="Permalink to this definition">¶</a></dt>
@@ -251,6 +182,62 @@
 
 </dd></dl>
 
+<div class="section" id="supported-syntax">
+<h2>Supported syntax<a class="headerlink" href="#supported-syntax" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Evaluation Statement:</p>
+<div class="highlight-python"><pre>{= title =}
+{= len(users) + len(groups) =}</pre>
+</div>
+</li>
+<li><p class="first">Loop Statement:</p>
+<div class="highlight-python"><pre>{% for user in users %}
+  &lt;tr&gt;
+    &lt;td&gt;{= loop.index =}&lt;/td&gt;
+    &lt;td&gt;&lt;a href="{= user.url() =}"&gt;{= user.name =}&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+{% endfor %}</pre>
+</div>
+</li>
+<li><p class="first">IF Statement:</p>
+<div class="highlight-python"><pre>{% if user.is_admin() or user.is_manager() %}
+    Welcome {= user.name =}
+{% elif user.active() %}
+    Ha, ha. You are active.
+{% else %}
+  {% for food in foods %}
+     &lt;li&gt;{= loop.index =}. choice {= food =}
+  {% endfor %}
+{% endif %}</pre>
+</div>
+</li>
+<li><p class="first">Inlucde Statement:</p>
+<div class="highlight-python"><pre>{* include "widgets/nav.html" (group="this is group", action=action) *}</pre>
+</div>
+</li>
+<li><p class="first">Page Args:</p>
+<div class="highlight-python"><pre>{@ group, action, name="this is name" @}</pre>
+</div>
+</li>
+<li><p class="first">Block Definition:</p>
+<div class="highlight-python"><pre>{% block show_block(q, user="user") %}
+  &lt;p&gt;==============
+  &lt;p&gt;this is show_block in base.html
+  &lt;P&gt;q is {= q =}
+  &lt;p&gt;user is {= user =}
+  &lt;p&gt;==============
+{% endblock %}</pre>
+</div>
+</li>
+<li><p class="first">Block Invocation:</p>
+<div class="highlight-python"><pre>{$show_block('&lt;this is q&gt;', '&lt;this is user&gt;')$}</pre>
+</div>
+</li>
+<li><p class="first">Template Inherit:</p>
+<div class="highlight-python"><pre>{^ base="base.html" ^}</pre>
+</div>
+</li>
+</ul>
 </div>
 </div>
 

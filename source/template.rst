@@ -2,6 +2,30 @@
 Template
 ========
 
+.. py:module:: WebHello.template
+
+.. py:class:: Lookup(template_base, **config)
+
+    .. py:attribute:: template_base
+    .. py:attribute:: config
+
+    .. py:method:: search_template(self, template_file)
+
+    .. py:method:: serve_template(self, template_file, **kwargs)
+
+    .. py:method:: serve_template_func(self, template_file, block, **kwargs)
+
+
+.. py:class:: Template(environ)
+
+    .. py:attribute:: lookup
+    .. py:attribute:: filename
+    .. py:attribute:: raw_source
+    .. py:attribute:: parent
+
+    .. py:method:: render(self, namespace)
+
+
 Supported syntax
 ================
 
@@ -58,29 +82,3 @@ Supported syntax
 
     {^ base="base.html" ^}
 
-
-API Reference
-=============
-
-.. py:module:: WebHello.template
-
-.. py:class:: Lookup(template_base, **config)
-
-    .. py:attribute:: template_base
-    .. py:attribute:: config
-
-    .. py:method:: search_template(self, template_file)
-
-    .. py:method:: serve_template(self, template_file, **kwargs)
-
-    .. py:method:: serve_template_func(self, template_file, block, **kwargs)
-
-
-.. py:class:: Template(environ)
-
-    .. py:attribute:: lookup
-    .. py:attribute:: filename
-    .. py:attribute:: raw_source
-    .. py:attribute:: parent
-
-    .. py:method:: render(self, namespace)

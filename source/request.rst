@@ -2,9 +2,6 @@
 Request
 =======
 
-API Reference
-=============
-
 .. py:module:: WebHello.request
 
 .. py:class:: Request(environ)
