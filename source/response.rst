@@ -8,14 +8,14 @@ Response
 
    Http Response
 
-    .. py:attribute:: output
+   .. py:attribute:: output
 
-    .. py:attribute:: request
+   .. py:attribute:: request
 
-    .. py:attribute:: cookies
+   .. py:attribute:: cookies
 
-    .. py:attribute:: response_headers
+   .. py:attribute:: response_headers
 
-    .. py:method:: set_cookie(self, name, value, domain=None, path='/', expires=None, max_age=None, secure=None, httponly=None, version=None)
+   .. py:method:: set_cookie(self, name, value, domain=None, path='/', expires=None, max_age=None, secure=None, httponly=None, version=None)
 
-    .. py:method:: __call__(self, environ, start_response)
+   .. py:method:: __call__(self, environ, start_response)

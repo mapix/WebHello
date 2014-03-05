@@ -8,8 +8,8 @@ Router
 
    Http Router
 
-    .. py:attribute:: routes
+   .. py:attribute:: routes
 
-    .. py:method:: add_route(self, template, controller)
+   .. py:method:: add_route(self, template, controller)
 
-    .. py:method:: __call__(self, environ, start_response)
+   .. py:method:: __call__(self, environ, start_response)
