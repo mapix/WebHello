@@ -21,5 +21,7 @@ Yet-another micro web framework in Python.
 
 # License
 
-`Webhello` is copyright 2014 mapix and Contributors, and is made
-available under BSD-style license; see LICENSE for details.
+`WebHello` is copyright 2014 mapix and Contributors, and is made
+available under BSD-style license; see [LICENSE] for details.
+
+[LICENSE]: https://github.com/mapix/WebHello/blob/master/LICENSE

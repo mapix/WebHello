@@ -14,7 +14,7 @@ setup(
     long_description=README,
     author="mapix",
     author_email="mapix.me@gmail.com",
-    url='http://mapix.me/webhello/',
+    url='http://mapix.me/WebHello/',
     license='BSD',
     packages=['WebHello'],
     include_package_data=True,
