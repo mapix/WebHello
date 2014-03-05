@@ -1,0 +1,36 @@
+Welcome {= name =}
+You call me to {= action =} <br>
+{# this is comments #}
+<a href="/test_post"> test post</a> <br>
+<a href="/hello/leehom/"> hello leehom</a> <br>
+<a href="/hello/leehom/?action=sleep"> leehom sleep</a>
+
+{* include "b.html" (group="this is group", action=action) *}
+
+<table>
+{% for k, v in environ.items()%}
+<tr>
+    <td>{= loop.index =}</td>
+    <td>{= k =}</td>
+    <td>{= v =}</td>
+</tr>
+{% endfor%}
+
+{$show_block('<this is q>', '<this is user>')$}
+
+{% if name == "mapix"%}
+   hahah, i know mapix
+{% elif name == "qingchen" %}
+   hahah, i know qingchen
+{%else%}
+   hahah, i know nothing about you
+{%endif%}
+</table>
+
+{% block show_block(q, user="user")%}
+<p>==============
+<p>this is show_block in base.html
+<P>q is {= q =}
+<p>user is {= user =}
+<p>==============
+{%endblock%}

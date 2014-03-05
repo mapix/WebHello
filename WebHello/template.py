@@ -40,8 +40,15 @@ class EvaluationContext(object):
 
     def statement_eval(self, statement):
         _match = BLOCK_INVOKE_RE.match(statement)
-        block = self.template.blocks[_match.group('block')]
-        _namespace = eval(statement, block.signature)
+        block_name = _match.group('block')
+        if block_name.strip().startswith('parent.'):
+            block_name = block_name.replace('parent.', 'parent__')
+        if statement.strip().startswith('parent.'):
+            statement = statement.replace('parent.', 'parent__')
+        block = self.template.blocks[block_name]
+        _namespace = {k: v for k, v in self.namespace.items()}
+        _namespace.update(block.signature)
+        _namespace = eval(statement, _namespace)
         return block.render(_namespace)
 
     def statement_include(self, statement):
@@ -98,7 +105,7 @@ class RenderBlock(object):
         self.source = source
         self.raw_signature = raw_signature
         self.signature = {}
-        exec "def %s:return locals()" % self.raw_signature in self.signature
+        exec "def %s(%s):return locals()" % (self.name, self.raw_signature) in self.signature
 
     def render(self, namespace):
         context = EvaluationContext(self.template, self.source, namespace)
@@ -127,8 +134,17 @@ class Template(object):
         raw_signature = match.group('signature') if match else ''
         self.signature = {}
         exec "def _(%s):return locals()" % raw_signature in self.signature
+        match = TEMPLATE_BASE_RE.search(self.source)
+        self.parent = self.lookup.search_template(match.group('parent')) if match else None
+
+    def make_base_block(self, name, block):
+        return RenderBlock(self.parent, name, block.raw_signature, block.source)
 
     def render(self, namespace):
+        if self.parent:
+            self.parent.blocks.update({'parent__%s' % name: self.make_base_block('parent__%s' % name, block) for name, block in self.parent.blocks.items()})
+            self.parent.blocks.update({name: self.make_base_block(name, block) for name, block in self.blocks.items()})
+            return self.parent.render(namespace)
         context = EvaluationContext(self, self.source, namespace)
         return context.render()
 
@@ -158,7 +174,7 @@ class Lookup(object):
         return block.render(kwargs)
 
 BLOCK_INVOKE_RE = re.compile(r'''
-^\s*(?P<block>\w+)
+^\s*(?P<block>[\.\w]+)
 \(.*?\)\s*$
 ''', re.DOTALL | re.VERBOSE)
 EVA_CONTEXT_RE = re.compile(r'''
@@ -199,7 +215,7 @@ ELIF_STATEMENT_RE = re.compile(r'''
 ''', re.VERBOSE | re.DOTALL)
 
 RENDER_BLOCK_RE = re.compile(r'''
-{%\s*block\s+(?P<signature>(?P<name>\w+)\(.*?\))\s*%}
+{%\s*block\s+(?P<name>\w+)\((?P<signature>.*?)\)\s*%}
 (?P<source>.*?)
 {%\s*endblock\s*%}
 ''', re.VERBOSE | re.DOTALL)
@@ -210,6 +226,8 @@ INCLUDE_RE = re.compile(r'''
 
 TEMPLATE_SIGNATURE_RE = re.compile(r'''{@\s*(?P<signature>.*?)\s*@}
                                    ''', re.VERBOSE | re.DOTALL)
+TEMPLATE_BASE_RE = re.compile(r'''{\^\s*base="(?P<parent>.*?)"\s*\^}''', re.VERBOSE | re.DOTALL)
+
 
 class Loop(object):
     pass
