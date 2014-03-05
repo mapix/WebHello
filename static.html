@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -7,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; WebHello 0.1 documentation</title>
+  <title>Static &mdash; WebHello 0.1 documentation</title>
   
 
   
@@ -31,7 +32,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
     
 
@@ -45,13 +45,8 @@
 
   
     <link rel="top" title="WebHello 0.1 documentation" href="index.html"/>
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-   
-
+        <link rel="next" title="Exception" href="exception.html"/>
+        <link rel="prev" title="Template" href="template.html"/> 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
 
@@ -65,7 +60,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         <a href="index.html" class="icon icon-home"> WebHello</a>
-        <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+        <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
   <input type="text" name="q" placeholder="Search docs" />
   <input type="hidden" name="check_keywords" value="yes" />
   <input type="hidden" name="area" value="default" />
@@ -75,7 +70,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">WebHello</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#installing">Installing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#using-webhello">Using <cite>WebHello</cite></a></li>
@@ -99,8 +94,8 @@
 <li class="toctree-l2"><a class="reference internal" href="template.html#module-WebHello.template">API Reference</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="static.html">Static</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="static.html#module-WebHello.static">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Static</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-WebHello.static">API Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="exception.html">Exception</a><ul>
@@ -128,30 +123,71 @@
         <div class="rst-content">
           <ul class="wy-breadcrumbs">
   <li><a href="index.html">Docs</a> &raquo;</li>
-  <li><a href=""></a></li>
+  <li><a href="">Static</a></li>
     <li class="wy-breadcrumbs-aside">
+      
+        <a href="_sources/static.txt" rel="nofollow"> View page source</a>
       
     </li>
 </ul>
 <hr/>
 
           
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="static">
+<h1>Static<a class="headerlink" href="#static" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WebHello.static">
+<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-WebHello.static" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WebHello.static.Static">
+<em class="property">class </em><tt class="descclassname">WebHello.static.</tt><tt class="descname">Static</tt><big>(</big><em>self</em>, <em>application</em>, <em>static_config</em>, <em>rewrite_rule=None</em><big>)</big><a class="headerlink" href="#WebHello.static.Static" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serve static</p>
+<dl class="attribute">
+<dt id="WebHello.static.Static.application">
+<tt class="descname">application</tt><a class="headerlink" href="#WebHello.static.Static.application" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+<dl class="attribute">
+<dt id="WebHello.static.Static.url_prefix">
+<tt class="descname">url_prefix</tt><a class="headerlink" href="#WebHello.static.Static.url_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.static.Static.directory_prefix">
+<tt class="descname">directory_prefix</tt><a class="headerlink" href="#WebHello.static.Static.directory_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.static.Static.rewrite_rule">
+<tt class="descname">rewrite_rule</tt><a class="headerlink" href="#WebHello.static.Static.rewrite_rule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.static.Static.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>self</em>, <em>environ</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#WebHello.static.Static.__call__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.static.Static.serve_static">
+<tt class="descname">serve_static</tt><big>(</big><em>self</em>, <em>environ</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#WebHello.static.Static.serve_static" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
 
           <footer>
   <a href="https://github.com/mapix/WebHello"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  
+    <div class="rst-footer-buttons">
+      
+        <a href="exception.html" class="btn btn-neutral float-right" title="Exception"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="template.html" class="btn btn-neutral" title="Template"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

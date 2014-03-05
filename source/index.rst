@@ -12,6 +12,12 @@ Contents:
    :maxdepth: 2
 
    tutorial.rst
+   router.rst
+   request.rst
+   response.rst
+   template.rst
+   static.rst
+   exception.rst
 
 
 Indices and tables

@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -7,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; WebHello 0.1 documentation</title>
+  <title>Exception &mdash; WebHello 0.1 documentation</title>
   
 
   
@@ -31,7 +32,6 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="_static/searchtools.js"></script>
 
     
 
@@ -45,13 +45,7 @@
 
   
     <link rel="top" title="WebHello 0.1 documentation" href="index.html"/>
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-   
-
+        <link rel="prev" title="Static" href="static.html"/> 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
 
@@ -65,7 +59,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
         <a href="index.html" class="icon icon-home"> WebHello</a>
-        <form id ="rtd-search-form" class="wy-form" action="#" method="get">
+        <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
   <input type="text" name="q" placeholder="Search docs" />
   <input type="hidden" name="check_keywords" value="yes" />
   <input type="hidden" name="area" value="default" />
@@ -75,7 +69,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix">
         
         
-            <ul>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">WebHello</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#installing">Installing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial.html#using-webhello">Using <cite>WebHello</cite></a></li>
@@ -96,15 +90,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="template.html">Template</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="template.html#supported-syntax">Supported syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="template.html#module-WebHello.template">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html#api-reference">API Reference</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="static.html">Static</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="static.html#module-WebHello.static">API Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="exception.html">Exception</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="exception.html#module-WebHello.exception">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="static.html">Static</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Exception</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-WebHello.exception">API Reference</a></li>
 </ul>
 </li>
 </ul>
@@ -128,30 +119,61 @@
         <div class="rst-content">
           <ul class="wy-breadcrumbs">
   <li><a href="index.html">Docs</a> &raquo;</li>
-  <li><a href=""></a></li>
+  <li><a href="">Exception</a></li>
     <li class="wy-breadcrumbs-aside">
+      
+        <a href="_sources/exception.txt" rel="nofollow"> View page source</a>
       
     </li>
 </ul>
 <hr/>
 
           
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="exception">
+<h1>Exception<a class="headerlink" href="#exception" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-WebHello.exception">
+<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-WebHello.exception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="WebHello.exception.HTTPMovedPermanently">
+<em class="property">exception </em><tt class="descclassname">WebHello.exception.</tt><tt class="descname">HTTPMovedPermanently</tt><a class="headerlink" href="#WebHello.exception.HTTPMovedPermanently" title="Permalink to this definition">¶</a></dt>
+<dd><p>301 Moved Permanently
+The requested page has moved to a new URL</p>
+</dd></dl>
 
-  
-  <div id="search-results">
-  
-  </div>
+<dl class="exception">
+<dt id="WebHello.exception.HTTPFound">
+<em class="property">exception </em><tt class="descclassname">WebHello.exception.</tt><tt class="descname">HTTPFound</tt><a class="headerlink" href="#WebHello.exception.HTTPFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>302 Found
+The requested page has moved temporarily to a new URL</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="WebHello.exception.HTTPServerError">
+<em class="property">exception </em><tt class="descclassname">WebHello.exception.</tt><tt class="descname">HTTPServerError</tt><a class="headerlink" href="#WebHello.exception.HTTPServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>500 Internal Server Error
+A generic error message, given when no more specific message is suitable</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="WebHello.exception.HTTPNotFound">
+<em class="property">exception </em><tt class="descclassname">WebHello.exception.</tt><tt class="descname">HTTPNotFound</tt><a class="headerlink" href="#WebHello.exception.HTTPNotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>404 Not Found
+The requested page could not be found but may be available again in the future</p>
+</dd></dl>
+
+</div>
+</div>
+
 
           <footer>
   <a href="https://github.com/mapix/WebHello"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  
+    <div class="rst-footer-buttons">
+      
+      
+        <a href="static.html" class="btn btn-neutral" title="Static"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

@@ -1,0 +1,287 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Template &mdash; WebHello 0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:'',
+        VERSION:'0.1',
+        COLLAPSE_INDEX:false,
+        FILE_SUFFIX:'.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+    <link rel="top" title="WebHello 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Static" href="static.html"/>
+        <link rel="prev" title="Response" href="response.html"/> 
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="icon icon-home"> WebHello</a>
+        <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search docs" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">WebHello</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#installing">Installing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#using-webhello">Using <cite>WebHello</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#license">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="router.html">Router</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="router.html#module-WebHello.router">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request.html#module-WebHello.request">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="response.html">Response</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="response.html#module-WebHello.response">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-syntax">Supported syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WebHello.template">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="static.html">Static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception.html">Exception</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exception.html#module-WebHello.exception">API Reference</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href="/">WebHello</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <ul class="wy-breadcrumbs">
+  <li><a href="index.html">Docs</a> &raquo;</li>
+  <li><a href="">Template</a></li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="_sources/template.txt" rel="nofollow"> View page source</a>
+      
+    </li>
+</ul>
+<hr/>
+
+          
+  <div class="section" id="template">
+<h1>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="supported-syntax">
+<h2>Supported syntax<a class="headerlink" href="#supported-syntax" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Evaluation Statement:</p>
+<div class="highlight-python"><pre>{= title =}
+{= len(users) + len(groups) =}</pre>
+</div>
+</li>
+<li><p class="first">Loop Statement:</p>
+<div class="highlight-python"><pre>{% for user in users %}
+  &lt;tr&gt;
+    &lt;td&gt;{= loop.index =}&lt;/td&gt;
+    &lt;td&gt;&lt;a href="{= user.url() =}"&gt;{= user.name =}&lt;/a&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+{% endfor %}</pre>
+</div>
+</li>
+<li><p class="first">IF Statement:</p>
+<div class="highlight-python"><pre>{% if user.is_admin() or user.is_manager() %}
+    Welcome {= user.name =}
+{% elif user.active() %}
+    Ha, ha. You are active.
+{% else %}
+  {% for food in foods %}
+     &lt;li&gt;{= loop.index =}. choice {= food =}
+  {% endfor %}
+{% endif %}</pre>
+</div>
+</li>
+<li><p class="first">Inlucde Statement:</p>
+<div class="highlight-python"><pre>{* include "widgets/nav.html" (group="this is group", action=action) *}</pre>
+</div>
+</li>
+<li><p class="first">Page Args:</p>
+<div class="highlight-python"><pre>{@ group, action, name="this is name" @}</pre>
+</div>
+</li>
+<li><p class="first">Block Definition:</p>
+<div class="highlight-python"><pre>{% block show_block(q, user="user") %}
+  &lt;p&gt;==============
+  &lt;p&gt;this is show_block in base.html
+  &lt;P&gt;q is {= q =}
+  &lt;p&gt;user is {= user =}
+  &lt;p&gt;==============
+{% endblock %}</pre>
+</div>
+</li>
+<li><p class="first">Block Invocation:</p>
+<div class="highlight-python"><pre>{$show_block('&lt;this is q&gt;', '&lt;this is user&gt;')$}</pre>
+</div>
+</li>
+<li><p class="first">Template Inherit:</p>
+<div class="highlight-python"><pre>{^ base="base.html" ^}</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="module-WebHello.template">
+<span id="api-reference"></span><h2>API Reference<a class="headerlink" href="#module-WebHello.template" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="WebHello.template.Lookup">
+<em class="property">class </em><tt class="descclassname">WebHello.template.</tt><tt class="descname">Lookup</tt><big>(</big><em>template_base</em>, <em>**config</em><big>)</big><a class="headerlink" href="#WebHello.template.Lookup" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="WebHello.template.Lookup.template_base">
+<tt class="descname">template_base</tt><a class="headerlink" href="#WebHello.template.Lookup.template_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.template.Lookup.config">
+<tt class="descname">config</tt><a class="headerlink" href="#WebHello.template.Lookup.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.template.Lookup.search_template">
+<tt class="descname">search_template</tt><big>(</big><em>self</em>, <em>template_file</em><big>)</big><a class="headerlink" href="#WebHello.template.Lookup.search_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.template.Lookup.serve_template">
+<tt class="descname">serve_template</tt><big>(</big><em>self</em>, <em>template_file</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WebHello.template.Lookup.serve_template" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.template.Lookup.serve_template_func">
+<tt class="descname">serve_template_func</tt><big>(</big><em>self</em>, <em>template_file</em>, <em>block</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#WebHello.template.Lookup.serve_template_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="WebHello.template.Template">
+<em class="property">class </em><tt class="descclassname">WebHello.template.</tt><tt class="descname">Template</tt><big>(</big><em>environ</em><big>)</big><a class="headerlink" href="#WebHello.template.Template" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="WebHello.template.Template.lookup">
+<tt class="descname">lookup</tt><a class="headerlink" href="#WebHello.template.Template.lookup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.template.Template.filename">
+<tt class="descname">filename</tt><a class="headerlink" href="#WebHello.template.Template.filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.template.Template.raw_source">
+<tt class="descname">raw_source</tt><a class="headerlink" href="#WebHello.template.Template.raw_source" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="WebHello.template.Template.parent">
+<tt class="descname">parent</tt><a class="headerlink" href="#WebHello.template.Template.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WebHello.template.Template.render">
+<tt class="descname">render</tt><big>(</big><em>self</em>, <em>namespace</em><big>)</big><a class="headerlink" href="#WebHello.template.Template.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          <footer>
+  <a href="https://github.com/mapix/WebHello"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  
+    <div class="rst-footer-buttons">
+      
+        <a href="static.html" class="btn btn-neutral float-right" title="Static"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="response.html" class="btn btn-neutral" title="Response"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <p>
+      &copy; Copyright 2013, mapix.
+  </p>
+  <a href="https://www.github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="http://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+</body>
+</html>

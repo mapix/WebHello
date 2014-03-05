@@ -45,6 +45,7 @@
 
   
     <link rel="top" title="WebHello 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Router" href="router.html"/>
         <link rel="prev" title="Welcome to WebHello’s documentation!" href="index.html"/> 
 
   <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -71,9 +72,27 @@
         
             <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">WebHello</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing">Installing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-webhello">Using <cite>WebHello</cite></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="router.html">Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request.html#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="response.html">Response</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="response.html#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="template.html">Template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="template.html#supported-syntax">Supported syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html#api-reference">API Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="static.html">Static</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exception.html">Exception</a></li>
 </ul>
 
         
@@ -109,10 +128,51 @@
 <h1>WebHello<a class="headerlink" href="#webhello" title="Permalink to this headline">¶</a></h1>
 <img alt="https://github.com/mapix/WebHello/raw/81adfdb467b4fd176ff0c61c3f4946e8d1874157/examples/todolist/static/favicon.ico" src="https://github.com/mapix/WebHello/raw/81adfdb467b4fd176ff0c61c3f4946e8d1874157/examples/todolist/static/favicon.ico" />
 <p>Yet-another micro web framework in Python.</p>
+<p><cite>WebHello</cite> is a micro web framework written completely to demonstrate how common web framework works. Components include:</p>
+<ul class="simple">
+<li>Http Request support cookie and other useful method to interact with <cite>WSGI</cite> environ.</li>
+<li>Simple Http Response generate.</li>
+<li>Http Exception handle.</li>
+<li>Simple static file serving.</li>
+<li>Http Router supported by regular expression.</li>
+<li>HTML Template implemented by regular expression totally.</li>
+</ul>
+<div class="section" id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h2>
+<p>Install <cite>WebHello</cite> from source:</p>
+<div class="highlight-python"><pre>git clone https://github.com/mapix/WebHello.git
+cd WebHello
+python setup.py install</pre>
+</div>
+</div>
+<div class="section" id="using-webhello">
+<h2>Using <cite>WebHello</cite><a class="headerlink" href="#using-webhello" title="Permalink to this headline">¶</a></h2>
+<p>Hello world example, Checkout <a class="reference external" href="https://github.com/mapix/WebHello/tree/master/examples">Examples</a> for more information.</p>
+<p>app.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">WebHello.static</span> <span class="kn">import</span> <span class="n">Static</span>
+<span class="kn">from</span> <span class="nn">WebHello.router</span> <span class="kn">import</span> <span class="n">Router</span>
+
+<span class="n">application</span> <span class="o">=</span> <span class="n">Router</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;hello:say_hello&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;/{mame:\w+}&#39;</span><span class="p">,</span> <span class="s">&#39;hello:say_hello&#39;</span><span class="p">)]</span>
+<span class="n">rewrites</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;/favicon.ico&#39;</span><span class="p">:</span> <span class="s">&#39;/static/favicon.ico&#39;</span><span class="p">}</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">Static</span><span class="p">(</span><span class="n">application</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;/static/&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">),</span> <span class="n">rewrites</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">wsgiref.simple_server</span> <span class="kn">import</span> <span class="n">make_server</span>
+    <span class="n">httpd</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="n">application</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;Serving on port 8000...&quot;</span>
+    <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>hello.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;mapix&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;hello </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">mapix</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p><strong>WebHello</strong> is copyright 2013 mapix and Contributors, and is made
-available under BSD-style license; see LICENSE for details.</p>
+<p><strong>WebHello</strong> is copyright 2013 mapix and Contributors, and is made available under BSD-style license; see <a class="reference external" href="https://github.com/mapix/WebHello/blob/master/LICENSE">LICENSE</a> for details.</p>
 </div>
 </div>
 
@@ -121,6 +181,8 @@ available under BSD-style license; see LICENSE for details.</p>
   <a href="https://github.com/mapix/WebHello"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
   
     <div class="rst-footer-buttons">
+      
+        <a href="router.html" class="btn btn-neutral float-right" title="Router"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="Welcome to WebHello’s documentation!"><span class="icon icon-circle-arrow-left"></span> Previous</a>
