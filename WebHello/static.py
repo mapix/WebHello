@@ -10,7 +10,7 @@ class Static(object):
 
     def __init__(self, application, static_config, rewrite_rule=None):
         self.application = application
-        self.url_prefix, self.dictory_prefix = static_config
+        self.url_prefix, self.directory_prefix = static_config
         self.rewrite_rule = rewrite_rule
 
     def __call__(self, environ, start_response):
@@ -24,7 +24,7 @@ class Static(object):
     def serve_static(self, environ, start_response):
         status = "404 Not Found"
         content_type = None
-        static_info = os.path.join(self.dictory_prefix,
+        static_info = os.path.join(self.directory_prefix,
                                    environ.get('PATH_INFO')[len(self.url_prefix):])
         output = "404 Not Found"
         try:
