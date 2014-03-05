@@ -50,14 +50,9 @@ class Request(object):
 
 
     def get_url(self):
-        port = self.environ['SERVER_PORT']
         scheme = self.get_scheme()
-        return "%s://%s%s%s%s%s" % (scheme, self.environ['SERVER_NAME'],
-                              '' if (port == "80" and scheme == "http" or
-                                     port == "443" and scheme == "https") else ":%s" % port,
-                              self.environ['SCRIPT_NAME'],
-                              self.environ['PATH_INFO'],
-                              self.environ['QUERY_STRING'])
+        return "%s://%s%s?%s" % (scheme, self.environ['HTTP_HOST'], 
+                self.environ['PATH_INFO'], self.environ['QUERY_STRING'])
 
     def _save_upload(self, upload_file):
         fp = TemporaryFile()
